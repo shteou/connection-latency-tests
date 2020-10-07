@@ -12,7 +12,7 @@ def print_percentiles(a):
 url = "https://stewartplatt.com/"
 hostname = "stewartplatt.com"
 
-def fresh_request():
+def http_request():
 	r = requests.get(url, stream=False)
 
 s = requests.session()
@@ -33,20 +33,20 @@ def tls_handshake():
 if __name__ == "__main__":
 	if len(sys.argv) < 2:
 		print("Usage:")
-		print("  cxn.py [fresh] [keepalive] [tcp] [tls]")
-		print("  e.g. ./cxn.py fresh keepalive")
+		print("  cxn.py [http] [keepalive] [tcp] [tls]")
+		print("  e.g. ./cxn.py http keepalive")
 		sys.exit(1)
 
 	commands = sys.argv[1:]
 	count = 10
 
 	for c in commands:
-		if "fresh" == c:
-			print("Fresh requests:")
-			t = timeit.Timer('fresh_request()', setup='from __main__ import fresh_request')
+		if "http" == c:
+			print("HTTTP requests:")
+			t = timeit.Timer('http_request()', setup='from __main__ import http_request')
 			print_percentiles(t.repeat(repeat=count, number=1))
 		elif "keepalive" == c:
-			print("Keep-alive requests:")
+			print("HTTP requests with keep-alive:")
 			t = timeit.Timer('keepalive_request()', setup='from __main__ import keepalive_request')
 			print_percentiles(t.repeat(repeat=count, number=1))
 		elif "tcp" == c:
